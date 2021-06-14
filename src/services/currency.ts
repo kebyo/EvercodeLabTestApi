@@ -19,10 +19,10 @@ export default class CurrencyService {
      * @throws HttpError - currency with his ticker already exists
      */
     public static async add(currency: Currency): Promise<Currency> {
-        const potentialCur: Currency | undefined = this.getByTicker(currency.ticker);
+        const potentialCur: Currency | undefined = this.getAllInArray().find(c => c.ticker === currency.ticker);
 
         if (potentialCur) {
-            throw new HttpError(HttpStatusCode.BadRequest, `Currency with ticker ${potentialCur.ticker} already exists`);
+            throw new HttpError(HttpStatusCode.BadRequest, `Currency with ticker ${currency.ticker} exists`);
         }
 
         currency.id = await nanoid();
@@ -60,8 +60,14 @@ export default class CurrencyService {
      *
      * @param ticker - currency ticker
      */
-    private static getByTicker(ticker: string): Currency | undefined {
-         return this.getAllInArray().find(c => c.ticker === ticker);
+    public static getByTicker(ticker: string): Currency {
+         const currency: Currency | undefined =  this.getAllInArray().find(c => c.ticker === ticker);
+
+         if (!currency) {
+             throw new HttpError(HttpStatusCode.NotFound, `Currency with ticker ${ticker} not found`);
+         }
+
+         return currency;
     }
 
     /**
@@ -84,6 +90,7 @@ export default class CurrencyService {
      * @throws HttpError - if updated currency have same ticker with other currency
      */
     public static update(id: string, currency: Currency): Currency {
+        currency.id = id;
         const curWithSameTicker = this.getAllInArray().find(c => c.ticker === currency.ticker);
 
         if (curWithSameTicker) {

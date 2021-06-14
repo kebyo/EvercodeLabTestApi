@@ -1,5 +1,7 @@
 import {Router} from 'express';
 import CurrencyController from '../controllers/currency';
+import currencyValidator from '../middlewares/validations/currencyRoute';
+
 
 const router = Router();
 
@@ -16,7 +18,7 @@ router.get('/:id', CurrencyController.findById);
 /**
  * Route for adding new currency
  */
-router.post('/', CurrencyController.add);
+router.post('/', currencyValidator, CurrencyController.add);
 
 /**
  * Route for deleting currency by id
@@ -26,6 +28,6 @@ router.delete('/:id', CurrencyController.delete);
 /**
  * Route for updating currency by id
  */
-router.patch('/:id', CurrencyController.update)
+router.patch('/:id', currencyValidator, CurrencyController.update)
 
 export default router;

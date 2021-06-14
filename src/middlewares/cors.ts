@@ -13,6 +13,7 @@ export default (req: express.Request, res: express.Response, next: express.NextF
 
     if (req.method === 'OPTIONS'){
         res.header('Access-Control=Allow-Methods', 'GET, PATCH, POST');
+
         return res.json({});
     }
 

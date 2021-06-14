@@ -11,7 +11,7 @@ import HttpError, {HttpStatusCode} from '../utils/httpError';
 export default (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const error: HttpError = new HttpError(HttpStatusCode.NotFound, 'Route not Found');
 
-    res.status(error.status).json({
+    return res.status(error.status).json({
         error: error.message,
-    }).send();
+    });
 }
