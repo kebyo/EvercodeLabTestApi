@@ -13,6 +13,24 @@ export default class CurrencyController {
      * @param res - response
      */
     public static findAll(req: express.Request, res: express.Response) {
+        const queryParams = req.query as any;
+
+        if (queryParams && queryParams.ticker) {
+            const ticker: string = queryParams.ticker!;
+
+            try {
+                const currency: Currency = CurrencyService.getByTicker(ticker);
+
+                return res.json({
+                    currency,
+                });
+            } catch (error) {
+               return res.status(error.status).json({
+                    error: error.message,
+                });
+            }
+        }
+
         const currencies: Currency[] = CurrencyService.getAllInArray();
 
         res.json({
