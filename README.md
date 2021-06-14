@@ -24,6 +24,7 @@
     
     ```
     {
+       id: string - id валюты
        name: string - имя валюты
        ticker: string - тикер валюты (уникальный)
     }
