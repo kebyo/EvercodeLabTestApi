@@ -1,0 +1,15 @@
+body {
+    background-color: gray;
+    color: #fff;
+}
+
+.header {
+    display: flex;
+}
+
+.currency {
+    width: 20px;
+    border-radius: 3px;
+    border-width: 5px;
+    background: dimgrey;
+}
