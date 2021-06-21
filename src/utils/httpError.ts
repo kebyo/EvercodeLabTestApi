@@ -38,4 +38,9 @@ export enum HttpStatusCode {
      * The server can not do something because user send bad request. It can be wrong data.
      */
     BadRequest = 400,
+
+    /**
+     * The server redirected to another route
+     */
+    Redirect = 3001,
 }

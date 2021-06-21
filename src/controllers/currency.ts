@@ -33,9 +33,11 @@ export default class CurrencyController {
 
         const currencies: Currency[] = CurrencyService.getAllInArray();
 
-        res.json({
-            currencies,
-        });
+        // res.json({
+        //     currencies,
+        // });
+
+        res.render('index.pug');
     }
 
     /**
@@ -50,9 +52,10 @@ export default class CurrencyController {
         try {
             const currency: Currency = CurrencyService.getById(id);
 
-            res.json({
-                currency,
-            })
+            res.render('modules/currency', {
+                name: currency.name,
+                ticker: currency.ticker,
+            });
         } catch (error) {
             res.status(error.status).json({
                 error: error.message,
