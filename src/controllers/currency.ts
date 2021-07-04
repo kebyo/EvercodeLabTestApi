@@ -15,13 +15,13 @@ export default class CurrencyController {
     public static findAll(req: express.Request, res: express.Response) {
         const queryParams = req.query as any;
 
-        if (queryParams && queryParams.ticker) {
-            const ticker: string = queryParams.ticker!;
+        if (queryParams?.search) {
+            const search: string = queryParams.search!;
 
             try {
-                const currency: Currency = CurrencyService.getByTicker(ticker);
+                const currency = CurrencyService.search(search);
 
-                return res.json({
+                return res.render('currency.pug', {
                     currency,
                 });
             } catch (error) {
@@ -33,11 +33,10 @@ export default class CurrencyController {
 
         const currencies: Currency[] = CurrencyService.getAllInArray();
 
-        // res.json({
-        //     currencies,
-        // });
-
-        res.render('index.pug');
+        return res.render('currencies.pug', {
+            title: 'All currencies',
+            currencies,
+        });
     }
 
     /**
@@ -52,9 +51,9 @@ export default class CurrencyController {
         try {
             const currency: Currency = CurrencyService.getById(id);
 
-            res.render('modules/currency', {
-                name: currency.name,
-                ticker: currency.ticker,
+            return res.render('currency.pug', {
+                title: currency.ticker,
+                currency,
             });
         } catch (error) {
             res.status(error.status).json({
