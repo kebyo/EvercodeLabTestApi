@@ -13,7 +13,6 @@ import {HttpStatusCode} from '../../../utils/httpError';
 export default (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const name: string = req.body.currency.name;
     const ticker: string = req.body.currency.ticker;
-
     const errorMessages: string[] = [];
 
     if (!nameChecker(name)) {
