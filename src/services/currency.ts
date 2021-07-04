@@ -60,16 +60,27 @@ export default class CurrencyService {
      *
      * @param ticker - currency ticker
      */
-    public static getByTicker(ticker: string): Currency {
-         const currency: Currency | undefined =  this.getAllInArray().find(c => c.ticker === ticker);
-
-         if (!currency) {
-             throw new HttpError(HttpStatusCode.NotFound, `Currency with ticker ${ticker} not found`);
-         }
-
-         return currency;
+    public static getByTicker(ticker: string): Currency | undefined {
+         return this.getAllInArray().find(c => c.ticker === ticker);
     }
 
+    /**
+     * Get currencies by name
+     *
+     * @param name - currency name
+     */
+    public static getByName(name: string): Currency | undefined {
+        return this.getAllInArray().find(c => c.name === name);
+    }
+
+    /**
+     * Search currency by ticker or name
+     *
+     * @param filter - ticker or name
+     */
+    public static search(filter: string): Currency | undefined {
+        return this.getAllInArray().find(c => c.ticker === filter || c.name === filter);
+    }
     /**
      * Remove ticker by id
      *
