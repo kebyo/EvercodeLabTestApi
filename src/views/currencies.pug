@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    include includes/search
+
+    if currencies.length
+        each currency, key in currencies
+            .currency
+                div #{currency.name}
+                div #{currency.ticker}
+
+                div
+                    input(type="button" value="Edit (Not working 🤕)" onclick="edit()")
+    else
+        div No one currencies 🥺
+
+    script(src="/js/edit.js")
