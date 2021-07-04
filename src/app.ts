@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
+import cors from 'cors';
 import Env from './env';
-import cors from './middlewares/cors';
 import routeError from './middlewares/routeError';
 import currency from './routes/currency';
 import main from './routes/main';
@@ -30,13 +30,14 @@ export default class EvercodeLabTestApi {
      */
     public constructor() {
         this.app.use(express.json());
-        this.app.use(cors);
+        this.app.use(cors());
 
         this.app.set('views', path.join(__dirname, 'views'));
         this.app.set('view engine', 'pug')
 
-        this.app.use('/', main);
+        this.app.use(express.static(path.join(__dirname, 'public')));
 
+        this.app.use('/', main);
         this.app.use('/currency', currency);
 
         this.app.use(routeError);
