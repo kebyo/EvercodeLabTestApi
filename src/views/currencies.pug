@@ -1,17 +1,21 @@
 extends layout
 
 block content
-    include includes/search
+    head
+        link(rel="stylesheet" href="/css/currency.css")
+        link(rel="stylesheet" href="/css/edit.css")
+    body
+        include includes/search
 
-    if currencies.length
-        each currency, key in currencies
-            .currency
-                div #{currency.name}
-                div #{currency.ticker}
+        if currencies.length
+            .edit
+                input(type="button" value="Edit" onclick="edit()")
 
-                div
-                    input(type="button" value="Edit (Not working 🤕)" onclick="edit()")
-    else
-        div No one currencies 🥺
+            each currency, key in currencies
+                div(class="currency")
+                    div Name: #{currency.name}
+                    div Ticker: #{currency.ticker}
+        else
+            div No one currencies 🥺
 
-    script(src="/js/edit.js")
+        script(src="/js/edit.js")

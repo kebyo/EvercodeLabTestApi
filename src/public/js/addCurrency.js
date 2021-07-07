@@ -1,4 +1,4 @@
-function checkEmail(name) {
+function checkName(name) {
     const nameRegExp = /^[A-Za-z0-9]{1,20}$/;
 
     return nameRegExp.test(name);
@@ -14,7 +14,7 @@ async function addCurrency() {
     const name = document.getElementById('currencyName');
     const ticker = document.getElementById('currencyTicker');
 
-    const isNormName = checkEmail(name.valie);
+    const isNormName = checkName(name.valie);
     const isNormTicker = checkTicker(ticker.value);
 
     if (!isNormName) {

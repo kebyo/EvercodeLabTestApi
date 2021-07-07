@@ -1,8 +1,18 @@
 extends layout
 
 block content
-    include includes/search
+    head
+        link(rel="stylesheet" href="/css/currency.css")
+    body
+        include includes/search
 
-    .currency
-        div #{currency.name}
-        div #{currency.ticker}
+        if currency
+            input(type="button" value="Edit" onclick="edit()")
+
+            .currency
+                div Name: #{currency.name}
+                div Ticker: #{currency.ticker}
+        else
+            div Not found 🥺
+
+        script(src="/js/edit.js")

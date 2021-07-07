@@ -5,6 +5,7 @@ import Env from './env';
 import routeError from './middlewares/routeError';
 import currency from './routes/currency';
 import main from './routes/main';
+import sendError from './middlewares/sendError';
 
 /**
  * EvercodeLab Test task API
@@ -41,6 +42,8 @@ export default class EvercodeLabTestApi {
         this.app.use('/currency', currency);
 
         this.app.use(routeError);
+
+        this.app.use(sendError);
     }
 
     /**

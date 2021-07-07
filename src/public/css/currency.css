@@ -1,5 +1,10 @@
 .currency {
-    border-width: 3px;
-    border-radius: 10px;
-    border: black;
+    width: 160px;
+    height: 80px;
+    display: inline-block;
+    border-radius: 4px;
+    border: 2px #5069e3 solid;
+    margin-right: 3px;
+    padding-left: 5px;
+    padding-top: 3px;
 }

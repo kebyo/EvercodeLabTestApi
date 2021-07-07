@@ -1,6 +1,7 @@
 import express from 'express';
 import CurrencyService from '../services/currency';
 import Currency from '../types/currency';
+import HttpError, {HttpStatusCode} from '../utils/httpError';
 
 /**
  * Currency controller
@@ -40,38 +41,22 @@ export default class CurrencyController {
     }
 
     /**
-     * Find currency by id
-     *
-     * @param req - request
-     * @param res - response
-     */
-    public static findById(req: express.Request, res: express.Response) {
-        const id: string = req.params.id;
-
-        try {
-            const currency: Currency = CurrencyService.getById(id);
-
-            return res.render('currency.pug', {
-                title: currency.ticker,
-                currency,
-            });
-        } catch (error) {
-            res.status(error.status).json({
-                error: error.message,
-            });
-        }
-    }
-
-    /**
      * Add new currency
      *
      * @param req - request
      * @param res - response
+     * @param next - next funciton
      */
-    public static async add(req: express.Request, res: express.Response) {
+    public static async add(req: express.Request, res: express.Response, next: express.NextFunction): Promise<express.Response | void> {
         const currency = req.body.currency;
 
         try {
+            const potentialCurrency = CurrencyService.getByTicker(currency.ticker);
+
+            if (potentialCurrency) {
+                return next(new HttpError(HttpStatusCode.BadRequest, `Currency with ticker ${potentialCurrency.ticker} already exists`))
+            }
+
             const cur: Currency = await CurrencyService.add(currency);
 
             res.json({
@@ -102,7 +87,6 @@ export default class CurrencyController {
                 error: error.message,
             });
         }
-
     }
 
     /**
@@ -110,16 +94,55 @@ export default class CurrencyController {
      *
      * @param req - request
      * @param res - response
+     * @param next - next function
      */
-    public static update(req: express.Request, res: express.Response) {
+    public static update(req: express.Request, res: express.Response, next: express.NextFunction) {
         const currency = req.body.currency;
         const id = req.params.id;
 
         try {
+            const oldCurrency: Currency | undefined = CurrencyService.getById(id);
+
+            if (!oldCurrency) {
+                return next(new HttpError(HttpStatusCode.NotFound, `Currency with id ${id} not found`));
+            }
+
+            if (oldCurrency.ticker !== currency.ticker) {
+                const currencyWithSameTicker = CurrencyService.getByTicker(currency.ticker);
+
+                if (currencyWithSameTicker) {
+                    return next(new HttpError(HttpStatusCode.BadRequest, `Currency with ticker ${currency.ticker} already exists`))
+                }
+            }
+
             const updatedCurrency: Currency = CurrencyService.update(id, currency);
 
             res.json({
                 currency: updatedCurrency,
+            });
+        } catch (error) {
+            res.status(error.status).json({
+                error: error.message,
+            });
+        }
+    }
+
+    /**
+     * Render edit currency page
+     *
+     * @param req - request
+     * @param res - response
+     */
+    public static edit(req: express.Request, res: express.Response) {
+        try {
+            const currencies = CurrencyService.getAllInArray();
+
+            if (!currencies.length) {
+                res.redirect('/');
+            }
+
+            res.render('edit', {
+                currencies
             });
         } catch (error) {
             res.status(error.status).json({

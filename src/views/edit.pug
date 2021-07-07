@@ -1,0 +1,25 @@
+head
+    link(rel="stylesheet" href="/css/currency.css")
+    link(rel="stylesheet" href="/css/edit.css")
+body
+    if currencies.length
+        div(id="errors")
+
+        form(id="updateForm")
+            each currency in currencies
+                .currency
+                    div(id=`nameError${currency.id}`)
+                    div Name:
+                        input(id=`${currency.id}` type="text" value=`${currency.name}`)
+
+                    div(id=`tickerError${currency.id}`)
+                    div Ticker:
+                        input(id=`${currency.id}` type="text" value=`${currency.ticker}`)
+
+    .edit__updateButton
+        input(type="button" value="Update" onclick=`update()`)
+    .edit__backButton
+        input(type="button" value="Back to Home" onclick=`backToHome()`)
+
+    script(src="/js/update.js")
+    script(src="/js/backToHome.js")

@@ -1,10 +1,14 @@
-div
-    div Search by ticker or name
+head
+    link(rel="stylesheet" href="/css/search.css")
+body
+    .search
+        div Search by ticker or name
 
-    div
-        input(id="search" type="text")
+        .search__find
+            .search__find__input
+                input(id="search" type="text")
 
-    div
-        input(type="button" value="Search" onclick="search()")
+            .search__find__button
+                input(type="button" value="Search" onclick="search()")
 
-script(async src="/js/search.js")
+    script(async src="/js/search.js")

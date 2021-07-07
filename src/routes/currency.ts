@@ -6,14 +6,15 @@ import currencyValidator from '../middlewares/validations/currencyRoute';
 const router = Router();
 
 /**
+ * Route for getting edit page
+ */
+router.get('/edit', CurrencyController.edit);
+
+/**
  * Route for getting all currencies
  */
 router.get('/', CurrencyController.findAll);
 
-/**
- * Route for getting currency by id
- */
-router.get('/:id', CurrencyController.findById);
 
 /**
  * Route for adding new currency
